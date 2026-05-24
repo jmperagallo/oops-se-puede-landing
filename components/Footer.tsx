@@ -11,47 +11,65 @@ export default function Footer({ phase }: FooterProps) {
   return (
     <AnimatePresence>
       {phase === "reveal" && (
-        <motion.footer 
-          initial={{ opacity: 0, y: 15 }}
+        <motion.footer
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 15 }}
-          transition={{ delay: 2.0, duration: 1.0, ease: "easeOut" }}
-          className="relative z-20 w-full text-center py-6 px-6 border-t border-[#1C1C1C]/5 flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-y-4"
+          exit={{ opacity: 0, y: 20 }}
+          transition={{
+            duration: 1.2,
+            ease: "easeOut",
+          }}
+          // Layout simplificado: 100% vertical (flex flex-col items-center)
+          // y centrado para coincidir con lo que ves en tu localhost.
+          className="
+            relative 
+            z-40
+            w-full
+            max-w-screen-2xl
+            mx-auto
+
+            px-5
+            py-8
+            md:px-10
+
+            flex
+            flex-col
+            items-center
+            justify-center
+
+            gap-y-6
+
+            text-[#1C1C1C]/80
+
+            backdrop-blur-[2px]
+            bg-transparent
+          "
         >
-          {/* Izquierda: Copyright */}
-          <p className="text-xs sm:text-sm text-[#4A4A4A]/70 font-sans tracking-wide order-3 md:order-1">
-            &copy; {new Date().getFullYear()} OOPS! SE PUEDE. Todos los derechos reservados.
-          </p>
-          
-          {/* Centro: Crédito de Ingeniería de Diseño (IA Maker Studio) */}
-          <div className="relative w-[180px] h-[40px] opacity-40 hover:opacity-90 transition-opacity duration-300 brightness-0 order-1 md:order-2">
-            <Image
-              src="/LogoFooterBNTrans.png" 
-              alt="Diseñado por IA MAKER STUDIO"
-              fill
-              style={{ objectFit: "contain" }}
-            />
+
+          {/* ========================================= */}
+          {/* LOGO IA MAKER (AGRANDADO A PEDIDO) */}
+          {/* ========================================= */}
+          <div className="flex justify-center items-center">
+            {/* 🔥 Aquí está el cambio: w-[200px] h-[45px] en móvil y md:w-[260px] md:h-[58px] en escritorio. Es considerablemente más grande. */}
+            <div className="relative w-[200px] h-[45px] md:w-[260px] md:h-[58px] opacity-60 hover:opacity-100 transition-opacity duration-300 brightness-0">
+              <Image
+                src="/LogoFooterBNTrans.png" 
+                alt="Diseñado e Ingenierizado por IA MAKER STUDIO"
+                fill
+                style={{ objectFit: "contain" }} // Asegura que el logo no se deforme al crecer.
+              />
+            </div>
           </div>
-          
-          {/* Derecha: Redes de Contacto */}
-          <div className="flex gap-x-6 text-xs sm:text-sm font-sans tracking-widest uppercase font-semibold text-[#9A7B40] order-2 md:order-3">
-            <a 
-              href="https://instagram.com/oops.sepuede" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="hover:text-[#1C1C1C] transition-colors duration-200"
-            >
-              Instagram
-            </a>
-            <a 
-              href="https://wa.me/56996104521" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="hover:text-[#1C1C1C] transition-colors duration-200"
-            >
-              Contacto
-            </a>
+
+          {/* ========================================= */}
+          {/* COPYRIGHT CENTRADO */}
+          {/* ========================================= */}
+          <div className="text-center">
+            <span className="text-[11px] sm:text-xs md:text-sm tracking-[0.04em]">
+              &copy; {new Date().getFullYear()} OOPS! SE PUEDE. Todos los derechos reservados.
+            </span>
           </div>
+
         </motion.footer>
       )}
     </AnimatePresence>
