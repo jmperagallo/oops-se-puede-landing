@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import Footer from "@/components/Footer"; // 👈 Importamos tu nuevo módulo
 
 export default function Home() {
   const [phase, setPhase] = useState<"incoming" | "countdown" | "reveal">("incoming");
@@ -32,12 +33,12 @@ export default function Home() {
   };
 
   const itemVariants: any = {
-    hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
+    hidden: { opacity: 0, y: 25, filter: "blur(8px)" },
     visible: { 
       opacity: 1, 
       y: 0, 
       filter: "blur(0px)", 
-      transition: { duration: 1.2 } 
+      transition: { duration: 1.4, ease: [0.16, 1, 0.3, 1] } 
     }
   };
 
@@ -49,16 +50,13 @@ export default function Home() {
         <source src="/Video Granos Cafe.mp4" type="video/mp4" />
       </video>
       
-      {/* 🤍 CAPA BLANCA AJUSTADA (50% de opacidad) */}
+      {/* 🤍 CAPA BLANCA EDITORIAL */}
       <div className="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-0 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/70 z-0 pointer-events-none" />
 
-      {/* Espaciador superior para equilibrar el contenido */}
-      <div className="h-0 md:h-12 z-10" />
+      <div className="h-4 md:h-16 z-10" />
 
       <AnimatePresence mode="wait">
-        
-        {/* FASE 1: PRÓXIMAMENTE */}
         {phase === "incoming" && (
           <motion.div
             key="incoming"
@@ -73,7 +71,6 @@ export default function Home() {
           </motion.div>
         )}
 
-        {/* FASE 2: CONTEO */}
         {phase === "countdown" && count > 0 && (
           <motion.div
             key={`count-${count}`}
@@ -89,7 +86,6 @@ export default function Home() {
           </motion.div>
         )}
 
-        {/* FASE 3: REVELACIÓN EDITORIAL */}
         {phase === "reveal" && (
           <motion.div
             key="reveal"
@@ -98,13 +94,12 @@ export default function Home() {
             animate="visible"
             className="relative z-20 w-full flex flex-col items-center justify-center p-4 sm:p-8 md:p-12 text-center my-auto"
           >
-            <div className="w-full max-w-screen-2xl flex flex-col items-center py-4">
+            <div className="w-full max-w-screen-2xl flex flex-col items-center py-2">
 
-              {/* 🚀 1. LOGO TRIPLICADO Y RESPONSIVO */}
-              {/* En móviles pequeños usa el máximo espacio seguro disponible, en pantallas medianas escala al triple */}
+              {/* 🎯 LOGO TRIPLICADO Y RESPONSIVO */}
               <motion.div 
                 variants={itemVariants} 
-                className="relative w-full max-w-[340px] h-[160px] sm:max-w-[650px] sm:h-[280px] md:max-w-[1100px] md:h-[450px] lg:max-w-[1600px] lg:h-[600px] mb-6 md:mb-10 brightness-0 opacity-90"
+                className="relative w-full max-w-[320px] h-[140px] sm:max-w-[600px] sm:h-[260px] md:max-w-[1000px] md:h-[420px] lg:max-w-[1500px] lg:h-[550px] mb-6 md:mb-10 brightness-0 opacity-90"
               >
                 <Image
                   src="/Logo Transparente.png"
@@ -115,18 +110,17 @@ export default function Home() {
                 />
               </motion.div>
 
-              {/* 2. TÍTULO EMOCIONAL */}
+              {/* TÍTULO EMOCIONAL */}
               <motion.h3 
                 variants={itemVariants} 
-                className="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-sans font-extrabold text-[#1C1C1C] tracking-tight max-w-4xl leading-[1.3] mb-6 md:mb-8 px-2"
+                className="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-sans font-extrabold text-[#1C1C1C] tracking-tight max-w-5xl leading-[1.3] mb-6 md:mb-8 px-2"
               >
                 &quot;El placer de disfrutar sin culpas <br className="hidden sm:block" /> está por comenzar.&quot;
               </motion.h3>
 
-              {/* Linea divisoria */}
               <motion.div variants={itemVariants} className="w-12 sm:w-16 h-[2px] bg-[#B89B5E] mb-6 md:mb-8" />
 
-              {/* 3. TEXTO EDITORIAL */}
+              {/* TEXTO EDITORIAL */}
               <motion.p 
                 variants={itemVariants} 
                 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-serif italic text-[#4A4A4A] max-w-3xl leading-relaxed mb-8 md:mb-12 font-medium px-2"
@@ -134,7 +128,7 @@ export default function Home() {
                 OOPS! SE PUEDE... Muy pronto, una pastelería artesanal premium y café de especialidad diseñados para tu bienestar llegarán a su sitio web.
               </motion.p>
 
-              {/* 4. PILARES */}
+              {/* PILARES DE MARCA */}
               <motion.div 
                 variants={itemVariants} 
                 className="flex flex-wrap justify-center items-center gap-x-3 gap-y-2 text-xs sm:text-base md:text-lg lg:text-xl tracking-[0.15em] sm:tracking-[0.2em] text-[#9A7B40] uppercase font-bold px-4"
@@ -151,10 +145,12 @@ export default function Home() {
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnPresence>
 
-      {/* El espacio para el footer queda listo para cuando me des el OK definitivo con tu logo */}
-      <div className="h-6 w-full" />
+      {/* 🌟 AQUÍ INSERTAMOS EL MÓDULO DEL FOOTER DENTRO DE AN_PRESENCE */}
+      <AnimatePresence>
+        <Footer phase={phase} />
+      </AnimatePresence>
 
     </main>
   );
