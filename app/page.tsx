@@ -24,7 +24,7 @@ export default function Home() {
     }
   }, [count, phase]);
 
-  const containerVariants: any = {
+  const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -32,7 +32,7 @@ export default function Home() {
     }
   };
 
-  const itemVariants: any = {
+  const itemVariants = {
     hidden: { opacity: 0, y: 25, filter: "blur(8px)" },
     visible: { 
       opacity: 1, 
@@ -74,9 +74,9 @@ export default function Home() {
           </motion.div>
         )}
 
-        {/* FASE 2: CONTEO (Corregido para centrado absoluto perfecto) */}
+        {/* FASE 2: CONTEO (Centrado absoluto independiente) */}
         {phase === "countdown" && count > 0 && (
-          <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+          <div className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none">
             <motion.div
               key={`count-${count}`}
               initial={{ opacity: 0, scale: 0.9, filter: "blur(8px)" }}
@@ -154,7 +154,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* 🌟 LLAMADA AL MÓDULO DEL FOOTER (Corregido etiqueta externa) */}
+      {/* 🌟 LLAMADA AL MÓDULO DEL FOOTER */}
       <Footer phase={phase} />
 
     </main>
