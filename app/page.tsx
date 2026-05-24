@@ -23,7 +23,6 @@ export default function Home() {
     }
   }, [count, phase]);
 
-  // Usamos tipo 'any' para evitar bloqueos estrictos de TypeScript en Vercel
   const containerVariants: any = {
     hidden: { opacity: 0 },
     visible: {
@@ -43,16 +42,19 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-screen w-full bg-[#F8F6F2] flex items-center justify-center overflow-x-hidden font-sans antialiased">
+    <main className="relative min-h-screen w-full bg-[#F8F6F2] flex flex-col justify-between overflow-x-hidden font-sans antialiased">
       
       {/* 🎬 VIDEO DE FONDO */}
       <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
         <source src="/Video Granos Cafe.mp4" type="video/mp4" />
       </video>
       
-      {/* 🤍 CAPA BLANCA AJUSTADA (10% más transparente) */}
+      {/* 🤍 CAPA BLANCA AJUSTADA (50% de opacidad) */}
       <div className="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-0 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/70 z-0 pointer-events-none" />
+
+      {/* Espaciador superior para equilibrar el contenido */}
+      <div className="h-0 md:h-12 z-10" />
 
       <AnimatePresence mode="wait">
         
@@ -63,7 +65,7 @@ export default function Home() {
             initial={{ opacity: 0, filter: "blur(10px)", scale: 0.9 }}
             animate={{ opacity: [0, 1, 1, 0], filter: ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"], scale: 1 }}
             transition={{ duration: 2.8, times: [0, 0.2, 0.8, 1], ease: "easeInOut" }}
-            className="relative z-10 w-full text-center px-4"
+            className="relative z-10 w-full text-center px-4 my-auto"
           >
             <h2 className="text-[2.5rem] sm:text-[6rem] md:text-[10rem] lg:text-[14rem] font-light tracking-[0.12em] text-[#9A7B40] uppercase ml-[0.12em] leading-none drop-shadow-sm">
               Próximamente
@@ -87,21 +89,22 @@ export default function Home() {
           </motion.div>
         )}
 
-        {/* FASE 3: REVELACIÓN EDITORIAL (Adaptada para Scroll Móvil si se requiere) */}
+        {/* FASE 3: REVELACIÓN EDITORIAL */}
         {phase === "reveal" && (
           <motion.div
             key="reveal"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="relative z-20 w-full min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 md:p-12 text-center my-auto"
+            className="relative z-20 w-full flex flex-col items-center justify-center p-4 sm:p-8 md:p-12 text-center my-auto"
           >
-            <div className="w-full max-w-screen-2xl flex flex-col items-center py-8">
+            <div className="w-full max-w-screen-2xl flex flex-col items-center py-4">
 
-              {/* 1. LOGO ADAPTADO PARA CELULARES */}
+              {/* 🚀 1. LOGO TRIPLICADO Y RESPONSIVO */}
+              {/* En móviles pequeños usa el máximo espacio seguro disponible, en pantallas medianas escala al triple */}
               <motion.div 
                 variants={itemVariants} 
-                className="relative w-full max-w-[280px] h-[120px] sm:max-w-[500px] sm:h-[220px] md:max-w-[900px] md:h-[350px] lg:max-w-[1200px] lg:h-[420px] mb-8 md:mb-12 brightness-0 opacity-90"
+                className="relative w-full max-w-[340px] h-[160px] sm:max-w-[650px] sm:h-[280px] md:max-w-[1100px] md:h-[450px] lg:max-w-[1600px] lg:h-[600px] mb-6 md:mb-10 brightness-0 opacity-90"
               >
                 <Image
                   src="/Logo Transparente.png"
@@ -131,7 +134,7 @@ export default function Home() {
                 OOPS! SE PUEDE... Muy pronto, una pastelería artesanal premium y café de especialidad diseñados para tu bienestar llegarán a su sitio web.
               </motion.p>
 
-              {/* 4. PILARES RESPONSIVOS */}
+              {/* 4. PILARES */}
               <motion.div 
                 variants={itemVariants} 
                 className="flex flex-wrap justify-center items-center gap-x-3 gap-y-2 text-xs sm:text-base md:text-lg lg:text-xl tracking-[0.15em] sm:tracking-[0.2em] text-[#9A7B40] uppercase font-bold px-4"
@@ -149,6 +152,10 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* El espacio para el footer queda listo para cuando me des el OK definitivo con tu logo */}
+      <div className="h-6 w-full" />
+
     </main>
   );
 }
