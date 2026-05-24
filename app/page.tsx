@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import Image from "next/image";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer"; // 👈 Importamos el módulo
 
 export default function Home() {
   const [phase, setPhase] = useState<"incoming" | "countdown" | "reveal">("incoming");
@@ -24,7 +24,8 @@ export default function Home() {
     }
   }, [count, phase]);
 
-  const containerVariants = {
+  // Tipado correcto para evitar fallas en el build de Vercel
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -32,7 +33,7 @@ export default function Home() {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 25, filter: "blur(8px)" },
     visible: { 
       opacity: 1, 
@@ -74,7 +75,7 @@ export default function Home() {
           </motion.div>
         )}
 
-        {/* FASE 2: CONTEO (Centrado absoluto independiente) */}
+        {/* FASE 2: CONTEO (Centrado absoluto nativo) */}
         {phase === "countdown" && count > 0 && (
           <div className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none">
             <motion.div
