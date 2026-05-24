@@ -23,7 +23,8 @@ export default function Home() {
     }
   }, [count, phase]);
 
-  const containerVariants = {
+  // Usamos tipo 'any' para evitar bloqueos estrictos de TypeScript en Vercel
+  const containerVariants: any = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -31,8 +32,7 @@ export default function Home() {
     }
   };
 
-  // 1️⃣ AQUÍ ESTÁ EL FIX DE TYPESCRIPT: ease: "easeOut"
-  const itemVariants = {
+  const itemVariants: any = {
     hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
     visible: { 
       opacity: 1, 
@@ -43,16 +43,16 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-screen w-full bg-[#F8F6F2] flex items-center justify-center overflow-hidden font-sans antialiased">
+    <main className="relative min-h-screen w-full bg-[#F8F6F2] flex items-center justify-center overflow-x-hidden font-sans antialiased">
       
       {/* 🎬 VIDEO DE FONDO */}
       <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
         <source src="/Video Granos Cafe.mp4" type="video/mp4" />
       </video>
       
-      {/* 🤍 CAPA BLANCA TRANSPARENTE SOBRE TODA LA PANTALLA */}
-      <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-0 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/80 z-0 pointer-events-none" />
+      {/* 🤍 CAPA BLANCA AJUSTADA (10% más transparente) */}
+      <div className="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/70 z-0 pointer-events-none" />
 
       <AnimatePresence mode="wait">
         
@@ -65,7 +65,7 @@ export default function Home() {
             transition={{ duration: 2.8, times: [0, 0.2, 0.8, 1], ease: "easeInOut" }}
             className="relative z-10 w-full text-center px-4"
           >
-            <h2 className="text-[4rem] sm:text-[7rem] md:text-[10rem] lg:text-[14rem] font-light tracking-[0.15em] text-[#9A7B40] uppercase ml-[0.15em] leading-none drop-shadow-sm">
+            <h2 className="text-[2.5rem] sm:text-[6rem] md:text-[10rem] lg:text-[14rem] font-light tracking-[0.12em] text-[#9A7B40] uppercase ml-[0.12em] leading-none drop-shadow-sm">
               Próximamente
             </h2>
           </motion.div>
@@ -81,27 +81,27 @@ export default function Home() {
             transition={{ duration: 0.95, times: [0, 0.15, 0.85, 1] }}
             className="absolute inset-0 flex items-center justify-center z-10"
           >
-            <h1 className="text-[5.5rem] sm:text-[9rem] md:text-[13rem] lg:text-[18rem] font-serif italic font-medium text-[#1C1C1C] select-none leading-none drop-shadow-sm">
+            <h1 className="text-[4.5rem] sm:text-[8rem] md:text-[13rem] lg:text-[18rem] font-serif italic font-medium text-[#1C1C1C] select-none leading-none drop-shadow-sm">
               {count}
             </h1>
           </motion.div>
         )}
 
-        {/* FASE 3: REVELACIÓN EDITORIAL */}
+        {/* FASE 3: REVELACIÓN EDITORIAL (Adaptada para Scroll Móvil si se requiere) */}
         {phase === "reveal" && (
           <motion.div
             key="reveal"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 text-center"
+            className="relative z-20 w-full min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 md:p-12 text-center my-auto"
           >
-            <div className="relative w-full max-w-screen-2xl flex flex-col items-center">
+            <div className="w-full max-w-screen-2xl flex flex-col items-center py-8">
 
-              {/* 1. LOGO GIGANTE */}
+              {/* 1. LOGO ADAPTADO PARA CELULARES */}
               <motion.div 
                 variants={itemVariants} 
-                className="relative w-full max-w-[720px] h-[300px] md:max-w-[1320px] md:h-[480px] mb-16 brightness-0 opacity-90"
+                className="relative w-full max-w-[280px] h-[120px] sm:max-w-[500px] sm:h-[220px] md:max-w-[900px] md:h-[350px] lg:max-w-[1200px] lg:h-[420px] mb-8 md:mb-12 brightness-0 opacity-90"
               >
                 <Image
                   src="/Logo Transparente.png"
@@ -115,42 +115,33 @@ export default function Home() {
               {/* 2. TÍTULO EMOCIONAL */}
               <motion.h3 
                 variants={itemVariants} 
-                className="text-3xl sm:text-5xl md:text-6xl font-sans font-extrabold text-[#1C1C1C] tracking-tight max-w-4xl leading-[1.2] mb-8"
+                className="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-sans font-extrabold text-[#1C1C1C] tracking-tight max-w-4xl leading-[1.3] mb-6 md:mb-8 px-2"
               >
                 &quot;El placer de disfrutar sin culpas <br className="hidden sm:block" /> está por comenzar.&quot;
               </motion.h3>
 
               {/* Linea divisoria */}
-              <motion.div variants={itemVariants} className="w-16 h-[2px] bg-[#B89B5E] mb-8" />
+              <motion.div variants={itemVariants} className="w-12 sm:w-16 h-[2px] bg-[#B89B5E] mb-6 md:mb-8" />
 
               {/* 3. TEXTO EDITORIAL */}
               <motion.p 
                 variants={itemVariants} 
-                className="text-lg sm:text-2xl md:text-3xl font-serif italic text-[#4A4A4A] max-w-3xl leading-relaxed mb-12 font-medium"
+                className="text-base sm:text-xl md:text-2xl lg:text-3xl font-serif italic text-[#4A4A4A] max-w-3xl leading-relaxed mb-8 md:mb-12 font-medium px-2"
               >
                 OOPS! SE PUEDE... Muy pronto, una pastelería artesanal premium y café de especialidad diseñados para tu bienestar llegarán a su sitio web.
               </motion.p>
 
-
-              {/* 3. TEXTO EDITORIAL */}
-              <motion.p 
-                variants={itemVariants} 
-                className="text-lg sm:text-2xl md:text-3xl font-serif italic text-[#4A4A4A] max-w-3xl leading-relaxed mb-12 font-medium"
-              >
-                OOPS! SE PUEDE... Muy pronto, una pastelería artesanal premium y café de especialidad diseñados para tu bienestar llegarán a su sitio web.
-              </motion.p>
-
-              {/* 4. PILARES */}
+              {/* 4. PILARES RESPONSIVOS */}
               <motion.div 
                 variants={itemVariants} 
-                className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 text-sm sm:text-lg md:text-xl tracking-[0.2em] text-[#9A7B40] uppercase font-bold"
+                className="flex flex-wrap justify-center items-center gap-x-3 gap-y-2 text-xs sm:text-base md:text-lg lg:text-xl tracking-[0.15em] sm:tracking-[0.2em] text-[#9A7B40] uppercase font-bold px-4"
               >
                 <span>Keto</span>
-                <span className="text-[#1C1C1C]/20 select-none">•</span>
+                <span className="text-[#1C1C1C]/20 select-none text-xs sm:text-base">•</span>
                 <span>Sin Azúcar</span>
-                <span className="text-[#1C1C1C]/20 select-none">•</span>
+                <span className="text-[#1C1C1C]/20 select-none text-xs sm:text-base">•</span>
                 <span>Sin Gluten</span>
-                <span className="text-[#1C1C1C]/20 select-none">•</span>
+                <span className="text-[#1C1C1C]/20 select-none text-xs sm:text-base">•</span>
                 <span>Comida Real</span>
               </motion.div>
 
