@@ -31,6 +31,7 @@ export default function Home() {
     }
   };
 
+  // 1️⃣ AQUÍ ESTÁ EL FIX DE TYPESCRIPT: ease: "easeOut"
   const itemVariants = {
     hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
     visible: { 
@@ -55,7 +56,7 @@ export default function Home() {
 
       <AnimatePresence mode="wait">
         
-        {/* FASE 1: PRÓXIMAMENTE (TAMAÑO GIGANTE) */}
+        {/* FASE 1: PRÓXIMAMENTE */}
         {phase === "incoming" && (
           <motion.div
             key="incoming"
@@ -64,13 +65,13 @@ export default function Home() {
             transition={{ duration: 2.8, times: [0, 0.2, 0.8, 1], ease: "easeInOut" }}
             className="relative z-10 w-full text-center px-4"
           >
-            <h2 className="text-[4rem] sm:text-[7rem] md:text-[10rem] lg:text-[14rem] font-light tracking-[0.15em] text-[#9A7B40] ml-[0.15em] leading-none drop-shadow-sm">
-              Próximamente...
+            <h2 className="text-[4rem] sm:text-[7rem] md:text-[10rem] lg:text-[14rem] font-light tracking-[0.15em] text-[#9A7B40] uppercase ml-[0.15em] leading-none drop-shadow-sm">
+              Próximamente
             </h2>
           </motion.div>
         )}
 
-        {/* FASE 2: CONTEO (TAMAÑO GIGANTE - IDÉNTICO AL TEXTO ANTERIOR) */}
+        {/* FASE 2: CONTEO */}
         {phase === "countdown" && count > 0 && (
           <motion.div
             key={`count-${count}`}
@@ -111,12 +112,12 @@ export default function Home() {
                 />
               </motion.div>
 
-              {/* 2. TÍTULO EMOCIONAL */}
+              {/* 2. TÍTULO EMOCIONAL (2️⃣ AQUÍ ESTÁ EL FIX DE COMILLAS: &quot;) */}
               <motion.h3 
                 variants={itemVariants} 
                 className="text-3xl sm:text-5xl md:text-6xl font-sans font-extrabold text-[#1C1C1C] tracking-tight max-w-4xl leading-[1.2] mb-8"
               >
-                "El placer de disfrutar sin culpas <br className="hidden sm:block" /> está por comenzar."
+                &quot;El placer de disfrutar sin culpas <br className="hidden sm:block" /> está por comenzar.&quot;
               </motion.h3>
 
               {/* Linea divisoria */}
