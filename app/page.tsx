@@ -38,7 +38,7 @@ export default function Home() {
       opacity: 1, 
       y: 0, 
       filter: "blur(0px)", 
-      transition: { duration: 1.2, ease: "easeOut" } 
+      transition: { duration: 1.2 } 
     }
   };
 
@@ -131,7 +131,7 @@ export default function Home() {
                 OOPS! SE PUEDE... Muy pronto, una pastelería artesanal premium y café de especialidad diseñados para tu bienestar llegarán a su sitio web.
               </motion.p>
 
-              
+
               {/* 3. TEXTO EDITORIAL */}
               <motion.p 
                 variants={itemVariants} 
