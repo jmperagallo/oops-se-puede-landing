@@ -112,7 +112,7 @@ export default function Home() {
                 />
               </motion.div>
 
-              {/* 2. TÍTULO EMOCIONAL (2️⃣ AQUÍ ESTÁ EL FIX DE COMILLAS: &quot;) */}
+              {/* 2. TÍTULO EMOCIONAL */}
               <motion.h3 
                 variants={itemVariants} 
                 className="text-3xl sm:text-5xl md:text-6xl font-sans font-extrabold text-[#1C1C1C] tracking-tight max-w-4xl leading-[1.2] mb-8"
@@ -123,6 +123,15 @@ export default function Home() {
               {/* Linea divisoria */}
               <motion.div variants={itemVariants} className="w-16 h-[2px] bg-[#B89B5E] mb-8" />
 
+              {/* 3. TEXTO EDITORIAL */}
+              <motion.p 
+                variants={itemVariants} 
+                className="text-lg sm:text-2xl md:text-3xl font-serif italic text-[#4A4A4A] max-w-3xl leading-relaxed mb-12 font-medium"
+              >
+                OOPS! SE PUEDE... Muy pronto, una pastelería artesanal premium y café de especialidad diseñados para tu bienestar llegarán a su sitio web.
+              </motion.p>
+
+              
               {/* 3. TEXTO EDITORIAL */}
               <motion.p 
                 variants={itemVariants} 
