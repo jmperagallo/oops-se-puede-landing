@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import Footer from "@/components/Footer"; // 👈 Importamos tu nuevo módulo
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const [phase, setPhase] = useState<"incoming" | "countdown" | "reveal">("incoming");
@@ -54,9 +54,12 @@ export default function Home() {
       <div className="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-0 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/70 z-0 pointer-events-none" />
 
+      {/* Espaciador superior */}
       <div className="h-4 md:h-16 z-10" />
 
       <AnimatePresence mode="wait">
+        
+        {/* FASE 1: PRÓXIMAMENTE */}
         {phase === "incoming" && (
           <motion.div
             key="incoming"
@@ -71,21 +74,25 @@ export default function Home() {
           </motion.div>
         )}
 
+        {/* FASE 2: CONTEO (Corregido para centrado absoluto perfecto) */}
         {phase === "countdown" && count > 0 && (
-          <motion.div
-            key={`count-${count}`}
-            initial={{ opacity: 0, scale: 0.9, filter: "blur(8px)" }}
-            animate={{ opacity: [0, 1, 1, 0], scale: [0.9, 1, 1, 1.1], filter: ["blur(8px)", "blur(0px)", "blur(0px)", "blur(8px)"] }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.95, times: [0, 0.15, 0.85, 1] }}
-            className="absolute inset-0 flex items-center justify-center z-10"
-          >
-            <h1 className="text-[4.5rem] sm:text-[8rem] md:text-[13rem] lg:text-[18rem] font-serif italic font-medium text-[#1C1C1C] select-none leading-none drop-shadow-sm">
-              {count}
-            </h1>
-          </motion.div>
+          <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+            <motion.div
+              key={`count-${count}`}
+              initial={{ opacity: 0, scale: 0.9, filter: "blur(8px)" }}
+              animate={{ opacity: [0, 1, 1, 0], scale: [0.9, 1, 1, 1.1], filter: ["blur(8px)", "blur(0px)", "blur(0px)", "blur(8px)"] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.95, times: [0, 0.15, 0.85, 1] }}
+              className="text-center"
+            >
+              <h1 className="text-[4.5rem] sm:text-[8rem] md:text-[13rem] lg:text-[18rem] font-serif italic font-medium text-[#1C1C1C] select-none leading-none drop-shadow-sm">
+                {count}
+              </h1>
+            </motion.div>
+          </div>
         )}
 
+        {/* FASE 3: REVELACIÓN EDITORIAL */}
         {phase === "reveal" && (
           <motion.div
             key="reveal"
@@ -145,12 +152,10 @@ export default function Home() {
             </div>
           </motion.div>
         )}
-      </AnPresence>
-
-      {/* 🌟 AQUÍ INSERTAMOS EL MÓDULO DEL FOOTER DENTRO DE AN_PRESENCE */}
-      <AnimatePresence>
-        <Footer phase={phase} />
       </AnimatePresence>
+
+      {/* 🌟 LLAMADA AL MÓDULO DEL FOOTER (Corregido etiqueta externa) */}
+      <Footer phase={phase} />
 
     </main>
   );
