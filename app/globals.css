@@ -1,32 +1,36 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* app/globals.css - VERSIÓN V4 */
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --brand-green: #556B5D;  /* Verde Musgo */
-    --brand-beige: #D8C7B5;  /* Beige Natural */
-    --brand-dark: #1C1C1C;   /* Negro Profundo */
-    --brand-ivory: #F8F6F2;  /* Blanco Marfil */
-    --brand-gold: #B89B5E;   /* Dorado Suave */
-  }
+@theme {
+  /* Tus colores de marca */
+  --color-verde-musgo: #556B5D;
+  --color-beige-natural: #D8C7B5;
+  --color-negro-profundo: #1C1C1C;
+  --color-blanco-marfil: #F8F6F2;
+  --color-dorado-suave: #B89B5E;
+  
+  /* Alias para tus clases existentes */
+  --color-brand-green: #556B5D;
+  --color-brand-beige: #D8C7B5;
+  --color-brand-dark: #1C1C1C;
+  --color-brand-ivory: #F8F6F2;
+  --color-brand-gold: #B89B5E;
 }
 
-/* Clases utilitarias personalizadas para tu marca */
-.bg-brand-green { background-color: var(--brand-green); }
-.bg-brand-beige { background-color: var(--brand-beige); }
-.bg-brand-ivory { background-color: var(--brand-ivory); }
-
-.text-brand-green { color: var(--brand-green); }
-.text-brand-dark { color: var(--brand-dark); }
-.text-brand-gold { color: var(--brand-gold); }
-
-.border-brand-beige { border-color: var(--brand-beige); }
-
-/* Configuración de fuentes */
-.font-sans {
-  font-family: var(--font-montserrat), 'Helvetica Neue', sans-serif;
+/* Estilos base */
+body {
+  background-color: var(--color-blanco-marfil);
+  color: var(--color-negro-profundo);
+  font-family: var(--font-montserrat), sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
-.font-serif {
-  font-family: var(--font-playfair), 'Lora', serif;
-}
+
+/* Tus clases personalizadas (sin @apply) */
+.bg-brand-ivory { background-color: var(--color-brand-ivory); }
+.bg-brand-green { background-color: var(--color-brand-green); }
+.bg-brand-beige { background-color: var(--color-brand-beige); }
+.text-brand-dark { color: var(--color-brand-dark); }
+.text-brand-gold { color: var(--color-brand-gold); }
+.border-brand-beige { border-color: var(--color-brand-beige); }
+.font-sans { font-family: var(--font-montserrat), sans-serif; }
+.font-serif { font-family: var(--font-playfair), serif; }
