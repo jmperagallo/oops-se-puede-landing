@@ -1,0 +1,14 @@
+# public/robots.txt
+# Configuración para www.oops.cl
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+
+# Sitemap
+Sitemap: https://www.oops.cl/sitemap.xml
+
+# Host (opcional, pero recomendado)
+Host: https://www.oops.cl
