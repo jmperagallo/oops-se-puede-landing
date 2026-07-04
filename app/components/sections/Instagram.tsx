@@ -7,28 +7,20 @@ import { motion } from "framer-motion";
 
 export default function Instagram() {
   useEffect(() => {
-    // Cargar el script de Instagram
+    // Solo cargar el script de Instagram si no existe
     if (!document.querySelector('script[src="//www.instagram.com/embed.js"]')) {
       const script = document.createElement("script");
       script.async = true;
       script.src = "//www.instagram.com/embed.js";
       document.body.appendChild(script);
     }
-
-    // Procesar los embeds
-    if (window.instgrm) {
-      window.instgrm.Embeds.process();
-    }
   }, []);
 
   return (
-    // 🔥 FONDO BLANCO MARFIL
     <section className="py-16 md:py-20 bg-[#F8F6F2]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* ========================================= */}
-        {/* ENCABEZADO - CON COLORES DE MARCA */}
-        {/* ========================================= */}
+        {/* Encabezado de la sección */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -47,9 +39,7 @@ export default function Instagram() {
           </p>
         </motion.div>
 
-        {/* ========================================= */}
-        {/* FEED DE INSTAGRAM - CON FONDO BLANCO */}
-        {/* ========================================= */}
+        {/* Feed de Instagram */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -82,9 +72,7 @@ export default function Instagram() {
           />
         </motion.div>
 
-        {/* ========================================= */}
-        {/* BOTÓN "VER MÁS" */}
-        {/* ========================================= */}
+        {/* Botón "Ver más" */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -104,9 +92,7 @@ export default function Instagram() {
         
       </div>
 
-      {/* ========================================= */}
-      {/* CSS PARA OCULTAR LA CABECERA (OPCIONAL) */}
-      {/* ========================================= */}
+      {/* CSS para ocultar la cabecera (opcional) */}
       <style jsx>{`
         .instagram-feed-wrapper :global(.instagram-media) {
           background: #F8F6F2 !important;
@@ -116,7 +102,6 @@ export default function Instagram() {
           box-shadow: none !important;
         }
         
-        /* Intentar ocultar la cabecera (puede que no funcione en todos los casos) */
         .instagram-feed-wrapper :global(.instagram-media) > div:first-child {
           display: none !important;
         }
