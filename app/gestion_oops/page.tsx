@@ -4,6 +4,8 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import AdminLayout from "../components/admin/AdminLayout";
+import AdminHome from "../components/admin/AdminHome";
 
 export default function GestionOopsPage() {
   const { data: session, status } = useSession();
@@ -16,7 +18,14 @@ export default function GestionOopsPage() {
   }, [status, router]);
 
   if (status === "loading") {
-    return <div className="p-10 text-center">Cargando...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#F8F6F2]">
+        <div className="text-center">
+          <div className="text-4xl mb-4 animate-pulse">⏳</div>
+          <p className="text-[#95a5a6] font-montserrat">Cargando panel...</p>
+        </div>
+      </div>
+    );
   }
 
   if (!session) {
@@ -24,10 +33,8 @@ export default function GestionOopsPage() {
   }
 
   return (
-    <div className="p-10">
-      <h1 className="text-2xl font-bold">Panel de Administración</h1>
-      <p>Bienvenido, {session.user?.name || "Admin"} 👋</p>
-      <p className="text-sm text-gray-500 mt-4">Aquí irá el dashboard con módulos.</p>
-    </div>
+    <AdminLayout>
+      <AdminHome />
+    </AdminLayout>
   );
 }

@@ -1,10 +1,11 @@
+// app/components/sections/Nosotros.tsx
 "use client";
 
 import { motion } from "framer-motion";
 
 export default function Nosotros() {
   return (
-    <section id="nosotros" className="py-16 md:py-20 bg-[#F8F6F2]">
+    <section id="nosotros" className="py-16 md:py-20 bg-[#FBF3E0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           
@@ -19,7 +20,7 @@ export default function Nosotros() {
               <div className="text-8xl">🏠</div>
               <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-[#B89B5E]/10 rounded-full blur-2xl" />
             </div>
-            <div className="absolute -top-4 -right-4 bg-[#556B5D] text-[#F8F6F2] px-4 py-2 rounded-full text-sm font-montserrat shadow-lg">
+            <div className="absolute -top-4 -right-4 bg-[#B89B5E] text-[#FBF3E0] px-4 py-2 rounded-full text-sm font-montserrat shadow-lg">
               ✦ Desde 2025
             </div>
           </motion.div>
@@ -36,7 +37,7 @@ export default function Nosotros() {
             </span>
             <h2 className="font-playfair text-3xl md:text-4xl text-[#1C1C1C] mt-2">
               Comer saludable <br />
-              <span className="text-[#556B5D]">sí puede ser delicioso</span>
+              <span className="text-[#B89B5E]">sí puede ser delicioso</span>
             </h2>
             <p className="font-montserrat text-[#1C1C1C]/70 leading-relaxed mt-6">
               Somos una cafetería y pastelería especializada en alimentación Keto, 

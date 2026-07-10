@@ -1,3 +1,4 @@
+// app/components/sections/Ubicacion.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -5,7 +6,7 @@ import Link from "next/link";
 
 export default function Ubicacion() {
   return (
-    <section className="py-16 md:py-20 bg-[#969E75]">
+    <section className="py-16 md:py-20 bg-[#D2C3A6]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -14,10 +15,10 @@ export default function Ubicacion() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="font-playfair text-3xl md:text-4xl text-[#F8F6F2]">
+          <h2 className="font-playfair text-3xl md:text-4xl text-[#1C1C1C]">
             ✦ Visítanos ✦
           </h2>
-          <p className="font-montserrat text-[#F8F6F2]/80 mt-2">
+          <p className="font-montserrat text-[#1C1C1C]/60 mt-2">
             Ven a disfrutar de una experiencia única
           </p>
         </motion.div>
@@ -49,7 +50,7 @@ export default function Ubicacion() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-[#F8F6F2] rounded-2xl p-8 shadow-xl flex flex-col justify-center"
+            className="bg-[#FBF3E0] rounded-2xl p-8 shadow-xl flex flex-col justify-center border border-[#D8C7B5]/30"
           >
             <div className="space-y-6">
               <div className="flex items-start gap-4">
@@ -94,13 +95,13 @@ export default function Ubicacion() {
                 href="https://wa.me/56912345678"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 bg-[#556B5D] text-[#F8F6F2] px-6 py-3 rounded-full text-center font-montserrat text-sm hover:bg-[#3d4f43] transition shadow-lg flex items-center justify-center gap-2"
+                className="flex-1 bg-[#556B5D] text-[#FBF3E0] px-6 py-3 rounded-full text-center font-montserrat text-sm hover:bg-[#3d4f43] transition shadow-lg flex items-center justify-center gap-2"
               >
                 <span>📱</span> Pedir por WhatsApp
               </Link>
               <Link
                 href="/contacto"
-                className="flex-1 border border-[#556B5D] text-[#556B5D] px-6 py-3 rounded-full text-center font-montserrat text-sm hover:bg-[#556B5D] hover:text-[#F8F6F2] transition"
+                className="flex-1 border border-[#556B5D] text-[#556B5D] px-6 py-3 rounded-full text-center font-montserrat text-sm hover:bg-[#556B5D] hover:text-[#FBF3E0] transition"
               >
                 Contactar
               </Link>

@@ -6,29 +6,24 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#D8C7B5]">
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#FBF3E0]">
       
-      {/* ========================================= */}
-      {/* NUEVO: FONDO CON VIDEO DE GRANOS DE CAFÉ */}
-      {/* ========================================= */}
       <div className="absolute inset-0 z-0">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-cover opacity-60"
+          className="w-full h-full object-cover opacity-40"
         >
           <source src="/Video Granos Cafe.mp4" type="video/mp4" />
         </video>
-        {/* Overlay para oscurecer y darle textura */}
-        <div className="absolute inset-0 bg-[#D8C7B5]/60 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-[#FBF3E0]/60 backdrop-blur-[2px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 w-full">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           
-          {/* Columna Izquierda - Texto */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -51,19 +46,18 @@ export default function Hero() {
             <div className="flex flex-wrap gap-4 mt-8">
               <Link
                 href="/carta"
-                className="bg-[#556B5D] text-[#F8F6F2] px-8 py-3.5 rounded-full font-montserrat text-sm font-medium hover:bg-[#3d4f43] transition shadow-lg hover:shadow-xl"
+                className="bg-[#556B5D] text-[#FBF3E0] px-8 py-3.5 rounded-full font-montserrat text-sm font-medium hover:bg-[#3d4f43] transition shadow-lg hover:shadow-xl"
               >
                 Ver Carta
               </Link>
               <Link
                 href="#nosotros"
-                className="border-2 border-[#969E75] text-[#969E75] px-8 py-3.5 rounded-full font-montserrat text-sm font-medium hover:bg-[#969E75] hover:text-[#F8F6F2] transition"
+                className="border-2 border-[#B89B5E] text-[#B89B5E] px-8 py-3.5 rounded-full font-montserrat text-sm font-medium hover:bg-[#B89B5E] hover:text-[#FBF3E0] transition"
               >
                 Nuestra Historia
               </Link>
             </div>
 
-            {/* Tags */}
             <div className="flex flex-wrap gap-2 mt-10">
               {['Keto', 'Sin Azúcar', 'Sin Gluten', 'Comida Real', 'Café de Especialidad'].map((tag) => (
                 <span
@@ -76,7 +70,6 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Columna Derecha - Video con overlay y badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -84,7 +77,6 @@ export default function Hero() {
             className="relative flex justify-center"
           >
             <div className="relative w-full max-w-md aspect-square">
-              {/* Contenedor del video */}
               <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl border border-white/50">
                 <video
                   autoPlay
@@ -95,11 +87,9 @@ export default function Hero() {
                 >
                   <source src="/Video Granos Cafe.mp4" type="video/mp4" />
                 </video>
-                {/* Overlay interno para darle profundidad */}
                 <div className="absolute inset-0 bg-black/10" />
               </div>
               
-              {/* Badge flotante - ahora dice "Café de Especialidad" */}
               <div className="absolute -bottom-4 -right-4 sm:bottom-0 sm:right-0 bg-white rounded-2xl shadow-xl p-4 max-w-[180px] border border-[#D8C7B5]/30">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-[#556B5D]/10 rounded-full flex items-center justify-center">

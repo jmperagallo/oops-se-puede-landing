@@ -1,17 +1,16 @@
 // lib/supabase/client.ts
 import { createClient } from '@supabase/supabase-js';
 
-console.log("🔧 Inicializando Supabase client...");
-console.log("URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
-console.log("Anon Key (primeros 10 chars):", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 10));
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// 🔥 HARDCODEADO TEMPORALMENTE PARA AVANZAR
+const supabaseUrl = 'https://ysgnioqdjedudakgreuc.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlzZ25pb3FkamVkdWRha2dyZXVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwMzY2NjEsImV4cCI6MjA5ODYxMjY2MX0.VTl83IHllu_QHityCc28s7ornTzgAMs8Aqf6h93KAoI';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Cliente con permisos de administrador
 export const supabaseAdmin = createClient(
   supabaseUrl,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlzZ25pb3FkamVkdWRha2dyZXVjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzAzNjY2MSwiZXhwIjoyMDk4NjEyNjYxfQ.6oFUfZ6ydEk_QwJzvZ6e-SpEFOyKSY_w9q4j_gfTr8E'
 );
+
+// ✅ Exportar la URL para usarla en otros archivos
+export { supabaseUrl };

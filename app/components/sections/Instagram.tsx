@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 
 export default function Instagram() {
   useEffect(() => {
-    // Solo cargar el script de Instagram si no existe
     if (!document.querySelector('script[src="//www.instagram.com/embed.js"]')) {
       const script = document.createElement("script");
       script.async = true;
@@ -17,10 +16,9 @@ export default function Instagram() {
   }, []);
 
   return (
-    <section className="py-16 md:py-20 bg-[#F8F6F2]">
+    <section className="py-16 md:py-20 bg-[#FBF3E0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Encabezado de la sección */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -39,7 +37,6 @@ export default function Instagram() {
           </p>
         </motion.div>
 
-        {/* Feed de Instagram */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -56,7 +53,7 @@ export default function Instagram() {
                   data-instgrm-permalink="https://www.instagram.com/oops.sepuede/" 
                   data-instgrm-version="14" 
                   style="
-                    background: #F8F6F2; 
+                    background: #FBF3E0; 
                     border: none;
                     padding: 0;
                     margin: 0 auto;
@@ -72,7 +69,6 @@ export default function Instagram() {
           />
         </motion.div>
 
-        {/* Botón "Ver más" */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -84,7 +80,7 @@ export default function Instagram() {
             href="https://www.instagram.com/oops.sepuede"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block border-2 border-[#B89B5E] text-[#B89B5E] px-8 py-3 rounded-full font-montserrat text-sm font-medium hover:bg-[#B89B5E] hover:text-[#F8F6F2] transition"
+            className="inline-block border-2 border-[#B89B5E] text-[#B89B5E] px-8 py-3 rounded-full font-montserrat text-sm font-medium hover:bg-[#B89B5E] hover:text-[#FBF3E0] transition"
           >
             Ver más en Instagram →
           </Link>
@@ -92,10 +88,9 @@ export default function Instagram() {
         
       </div>
 
-      {/* CSS para ocultar la cabecera (opcional) */}
       <style jsx>{`
         .instagram-feed-wrapper :global(.instagram-media) {
-          background: #F8F6F2 !important;
+          background: #FBF3E0 !important;
           border: none !important;
           padding: 0 !important;
           margin: 0 !important;
