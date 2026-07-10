@@ -12,6 +12,7 @@
     "@supabase/supabase-js": "^2.110.0",
     "@volchoklv/socialfire-widget": "^1.0.5",
     "bcryptjs": "^3.0.3",
+    "date-fns": "^4.4.0",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.23.0",
     "next": "16.2.6",

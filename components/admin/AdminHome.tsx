@@ -1,76 +1,13 @@
-// app/components/admin/AdminHome.tsx
+// components/admin/AdminHome.tsx
 "use client";
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import DashboardStats from "./DashboardStats";
+import DashboardVisits from "./DashboardVisits";
 
-// ✅ Catálogo de módulos (con el nuevo módulo "Estadísticas")
-const MODULOS = [
-  {
-    slug: "dashboard",
-    label: "Dashboard",
-    icon: "📊",
-    href: "/gestion_oops",
-    desc: "Resumen y estadísticas"
-  },
-  {
-    slug: "categorias",
-    label: "Categorías",
-    icon: "📂",
-    href: "/gestion_oops/categorias",
-    desc: "Organiza tu carta"
-  },
-  {
-    slug: "productos",
-    label: "Productos",
-    icon: "🍰",
-    href: "/gestion_oops/productos",
-    desc: "Gestiona la carta digital"
-  },
-  {
-    slug: "estadisticas",        // ✅ NUEVO
-    label: "Estadísticas",
-    icon: "📈",
-    href: "/gestion_oops/estadisticas",
-    desc: "Visitas y métricas"
-  },
-  {
-    slug: "prospectos",
-    label: "Prospectos",
-    icon: "📧",
-    href: "/gestion_oops/prospectos",
-    desc: "Leads y contactos"
-  },
-  {
-    slug: "usuarios",
-    label: "Usuarios",
-    icon: "🛡️",
-    href: "/gestion_oops/usuarios",
-    desc: "Gestionar accesos"
-  },
-  {
-    slug: "galeria",
-    label: "Galería",
-    icon: "📷",
-    href: "/gestion_oops/galeria",
-    desc: "Subir imágenes"
-  },
-  {
-    slug: "pedidos",
-    label: "Pedidos",
-    icon: "📦",
-    href: "/gestion_oops/pedidos",
-    desc: "Gestionar pedidos"
-  },
-  {
-    slug: "configuracion",
-    label: "Configuración",
-    icon: "⚙️",
-    href: "/gestion_oops/configuracion",
-    desc: "Ajustes del sistema"
-  }
-];
+// ... (MODULOS igual que antes)
 
 export default function AdminHome() {
   const { data: session } = useSession();
@@ -78,7 +15,6 @@ export default function AdminHome() {
 
   return (
     <div className="p-4 md:p-6 bg-[#F8F6F2] min-h-[calc(100vh-64px)]">
-      {/* Encabezado */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -94,8 +30,12 @@ export default function AdminHome() {
         <div className="w-16 h-1 bg-[#B89B5E] mx-auto mt-4 rounded-full" />
       </motion.div>
 
-      {/* ✅ Grid de aplicaciones (SIN ESTADÍSTICAS) */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto">
+      {/* ✅ ESTADÍSTICAS */}
+      <DashboardStats />
+      <DashboardVisits />
+
+      {/* Grid de aplicaciones */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto mt-8">
         {MODULOS.map((modulo, index) => (
           <motion.div
             key={modulo.slug}

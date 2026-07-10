@@ -2,6 +2,7 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import RegistrarVisita from "@/components/RegistrarVisita"; // ✅ NUEVO
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -111,6 +112,9 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${montserrat.variable} ${playfair.variable}`}>
       <body className="bg-brand-ivory text-brand-dark font-sans antialiased flex flex-col min-h-screen">
+        {/* ✅ Registro de visita (cliente) */}
+        <RegistrarVisita />
+        
         {children}
       </body>
     </html>
