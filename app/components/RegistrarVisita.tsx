@@ -1,8 +1,8 @@
-// components/RegistrarVisita.tsx
+// app/components/RegistrarVisita.tsx
 "use client";
 
 import { useEffect } from "react";
-import { registrarVisita } from "../lib/utils/visitas";
+import { registrarVisita } from "../../lib/utils/visitas"; // ✅ RUTA CORREGIDA
 
 export default function RegistrarVisita() {
   useEffect(() => {
@@ -21,9 +21,5 @@ export default function RegistrarVisita() {
     }
   }, []);
 
-  return (
-    <div style={{ display: "none" }}>
-      {/* Componente invisible que registra visitas */}
-    </div>
-  );
+  return null;
 }
