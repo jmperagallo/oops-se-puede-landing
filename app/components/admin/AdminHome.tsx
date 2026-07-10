@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-// ✅ Catálogo de módulos (con el nuevo módulo "Estadísticas")
 const MODULOS = [
   {
     slug: "dashboard",
@@ -29,7 +28,7 @@ const MODULOS = [
     desc: "Gestiona la carta digital"
   },
   {
-    slug: "estadisticas",        // ✅ NUEVO
+    slug: "estadisticas",
     label: "Estadísticas",
     icon: "📈",
     href: "/gestion_oops/estadisticas",
@@ -78,7 +77,6 @@ export default function AdminHome() {
 
   return (
     <div className="p-4 md:p-6 bg-[#F8F6F2] min-h-[calc(100vh-64px)]">
-      {/* Encabezado */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -94,7 +92,6 @@ export default function AdminHome() {
         <div className="w-16 h-1 bg-[#B89B5E] mx-auto mt-4 rounded-full" />
       </motion.div>
 
-      {/* ✅ Grid de aplicaciones (SIN ESTADÍSTICAS) */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto">
         {MODULOS.map((modulo, index) => (
           <motion.div

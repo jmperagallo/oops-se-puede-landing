@@ -4,26 +4,7 @@
 import { useState, useEffect } from "react";
 import { supabaseAdmin } from "../../../lib/supabase/client";
 import ImageUpload from "./ImageUpload";
-
-interface Categoria {
-  id: string;
-  nombre: string;
-}
-
-interface Producto {
-  id: string;
-  nombre: string;
-  slug: string;
-  descripcion_corta: string;
-  descripcion_larga: string;
-  precio: number;
-  categoria_id: string;
-  etiquetas: string[];
-  imagenes: string[];
-  stock: number;
-  activo: boolean;
-  destacado: boolean;
-}
+import { Producto, Categoria } from "@/types/producto";
 
 interface ProductFormProps {
   editing: Producto | null;
@@ -50,7 +31,6 @@ export default function ProductForm({
   const [destacado, setDestacado] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Cargar datos al editar
   useEffect(() => {
     if (editing) {
       setNombre(editing.nombre || "");
@@ -245,7 +225,6 @@ export default function ProductForm({
           Imágenes
         </label>
         <div className="space-y-2">
-          {/* Mostrar imágenes existentes */}
           {imagenes.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-2">
               {imagenes.map((url, index) => (
@@ -266,19 +245,15 @@ export default function ProductForm({
               ))}
             </div>
           )}
-
-          {/* Upload de imágenes */}
-          <div className="flex gap-2">
-            <ImageUpload
-              value=""
-              onChange={handleImageChange}
-              bucket="productos"
-              folder="productos"
-              label="Agregar imagen"
-              maxSize={1200}
-              quality={0.9}
-            />
-          </div>
+          <ImageUpload
+            value=""
+            onChange={handleImageChange}
+            bucket="productos"
+            folder="productos"
+            label="Agregar imagen"
+            maxSize={1200}
+            quality={0.9}
+          />
         </div>
       </div>
 

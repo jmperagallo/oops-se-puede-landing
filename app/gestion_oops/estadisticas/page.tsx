@@ -38,7 +38,6 @@ export default function EstadisticasPage() {
   return (
     <AdminLayout>
       <div className="p-4 md:p-6">
-        {/* Encabezado */}
         <div className="mb-6">
           <h1 className="text-2xl md:text-3xl font-bold text-[#1C1C1C] font-playfair">
             📊 Estadísticas
@@ -47,8 +46,6 @@ export default function EstadisticasPage() {
             Resumen de visitas y métricas de OOPS! SE PUEDE
           </p>
         </div>
-
-        {/* ✅ Estadísticas */}
         <DashboardStats />
         <DashboardVisits />
       </div>

@@ -7,28 +7,8 @@ import { useRouter } from "next/navigation";
 import { supabase, supabaseAdmin } from "../../../lib/supabase/client";
 import AdminLayout from "../../components/admin/AdminLayout";
 import ProductForm from "../../components/admin/ProductForm";
+import { Producto, Categoria } from "@/types/producto";
 import { Pencil, Trash2, Plus, Eye, EyeOff, Star } from "lucide-react";
-
-interface Producto {
-  id: string;
-  nombre: string;
-  slug: string;
-  descripcion_corta: string;
-  precio: number;
-  categoria_id: string;
-  categoria_nombre?: string;
-  etiquetas: string[];
-  imagenes: string[];
-  stock: number;
-  activo: boolean;
-  destacado: boolean;
-  created_at: string;
-}
-
-interface Categoria {
-  id: string;
-  nombre: string;
-}
 
 export default function AdminProductos() {
   const { data: session, status } = useSession();
@@ -49,10 +29,9 @@ export default function AdminProductos() {
     }
   }, [status, router]);
 
-  // ✅ USAR supabaseAdmin PARA LEER PRODUCTOS (bypass RLS)
   const cargarProductos = async () => {
     setLoading(true);
-    
+
     const { data: productosData, error: productosError } = await supabaseAdmin
       .from("productos")
       .select("*")
@@ -64,9 +43,6 @@ export default function AdminProductos() {
       return;
     }
 
-    console.log("📦 Productos sin categoría:", productosData);
-
-    // ✅ USAR supabase (público) PARA LEER CATEGORÍAS (no necesita autenticación)
     const { data: categoriasData, error: categoriasError } = await supabase
       .from("categorias")
       .select("id, nombre");
@@ -77,13 +53,11 @@ export default function AdminProductos() {
       return;
     }
 
-    // Crear un mapa de categorías
     const categoriasMap: Record<string, string> = {};
     categoriasData?.forEach((cat) => {
       categoriasMap[cat.id] = cat.nombre;
     });
 
-    // Agregar el nombre de la categoría a cada producto
     const productosConCategoria = productosData?.map((p) => ({
       ...p,
       categoria_nombre: p.categoria_id ? categoriasMap[p.categoria_id] : "Sin categoría",
@@ -108,7 +82,6 @@ export default function AdminProductos() {
     }
   };
 
-  // ✅ USAR supabaseAdmin PARA ELIMINAR
   const eliminarProducto = async (id: string, nombre: string) => {
     if (!confirm(`¿Eliminar el producto "${nombre}"?`)) {
       return;
@@ -127,7 +100,6 @@ export default function AdminProductos() {
     }
   };
 
-  // ✅ USAR supabaseAdmin PARA ACTUALIZAR
   const toggleActivo = async (id: string, activo: boolean) => {
     const { error } = await supabaseAdmin
       .from("productos")
@@ -141,7 +113,6 @@ export default function AdminProductos() {
     }
   };
 
-  // ✅ USAR supabaseAdmin PARA ACTUALIZAR
   const toggleDestacado = async (id: string, destacado: boolean) => {
     const { error } = await supabaseAdmin
       .from("productos")
@@ -181,7 +152,6 @@ export default function AdminProductos() {
   return (
     <AdminLayout>
       <div className="p-4 md:p-6">
-        {/* Encabezado */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-[#1C1C1C] font-playfair">
@@ -200,7 +170,6 @@ export default function AdminProductos() {
           </button>
         </div>
 
-        {/* Formulario */}
         {showForm && (
           <div className="bg-white rounded-xl shadow-md p-6 mb-6 border border-[#D8C7B5]/30">
             <h2 className="font-semibold text-lg mb-4 flex items-center gap-2">
@@ -228,7 +197,6 @@ export default function AdminProductos() {
           </div>
         )}
 
-        {/* Listado */}
         {loading ? (
           <div className="text-center py-12">
             <p className="text-[#95a5a6]">Cargando...</p>
