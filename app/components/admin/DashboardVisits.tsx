@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabase } from "../../../lib/supabase/client";
+import { supabaseAdmin } from "../../../lib/supabase/client"; // ✅ USAR supabaseAdmin
 
 interface Visita {
   id: string;
@@ -23,10 +23,11 @@ export default function DashboardVisits() {
 
   const cargarVisitas = async () => {
     setLoading(true);
-    console.log("🔍 Cargando visitas...");
+    console.log("🔍 Cargando visitas con supabaseAdmin...");
 
     try {
-      const { data, error } = await supabase
+      // ✅ Usar supabaseAdmin en lugar de supabase
+      const { data, error } = await supabaseAdmin
         .from("visitas")
         .select("*")
         .order("fecha_visita", { ascending: false })
