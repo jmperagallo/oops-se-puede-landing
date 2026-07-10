@@ -23,17 +23,25 @@ export default function DashboardVisits() {
 
   const cargarVisitas = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("visitas")
-      .select("*")
-      .order("fecha_visita", { ascending: false })
-      .limit(10);
+    console.log("🔍 Cargando visitas...");
 
-    if (!error && data) {
-      setVisitas(data);
-    } else {
-      console.error("❌ Error cargando visitas:", error);
+    try {
+      const { data, error } = await supabase
+        .from("visitas")
+        .select("*")
+        .order("fecha_visita", { ascending: false })
+        .limit(10);
+
+      if (error) {
+        console.error("❌ Error cargando visitas:", error);
+      } else {
+        console.log("✅ Visitas cargadas:", data?.length || 0);
+        setVisitas(data || []);
+      }
+    } catch (error) {
+      console.error("❌ Error inesperado:", error);
     }
+
     setLoading(false);
   };
 
