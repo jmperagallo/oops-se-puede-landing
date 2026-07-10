@@ -6,13 +6,17 @@ import { registrarVisita } from "../../lib/utils/visitas";
 
 export default function RegistrarVisita() {
   useEffect(() => {
-    const ultimaVisita = localStorage.getItem("ultima_visita_oops");
-    const ahora = Date.now();
-    const tiempoMinimo = 3 * 60 * 1000; // 3 minutos
-
-    if (!ultimaVisita || (ahora - parseInt(ultimaVisita)) > tiempoMinimo) {
+    console.log("🔍 RegistrarVisita: componente montado");
+    
+    const yaRegistrado = sessionStorage.getItem("visita_registrada");
+    console.log("📌 yaRegistrado:", yaRegistrado);
+    
+    if (!yaRegistrado) {
+      console.log("📝 Registrando visita...");
       registrarVisita();
-      localStorage.setItem("ultima_visita_oops", String(ahora));
+      sessionStorage.setItem("visita_registrada", "true");
+    } else {
+      console.log("⏭️ Visita ya registrada en esta sesión");
     }
   }, []);
 
