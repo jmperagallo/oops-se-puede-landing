@@ -25,6 +25,7 @@ export default function Ubicacion() {
 
         <div className="grid lg:grid-cols-2 gap-8">
           
+          {/* Mapa - Ubicación exacta de Oops.sepuede */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -33,18 +34,19 @@ export default function Ubicacion() {
             className="bg-white rounded-2xl overflow-hidden shadow-xl h-[300px] lg:h-[400px]"
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3345.123456789!2d-71.5123456!3d-32.9123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzLCsDU0JzQ0LjUiUyA3McKwMzAnNDQuNSJX!5e0!3m2!1ses!2scl!4v1234567890"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1674.1702560461479!2d-71.5334436214914!3d-32.94201819533219!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689dd5675b9823f%3A0xdadee9c3b1220a67!2sOops.sepuede!5e0!3m2!1ses!2sus!4v1783649911692!5m2!1ses!2sus"
               width="100%"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
+              referrerPolicy="strict-origin-when-cross-origin"
               className="w-full h-full"
-              title="Ubicación OOPS! SE PUEDE"
+              title="Ubicación OOPS! SE PUEDE - Concón"
             />
           </motion.div>
 
+          {/* Info */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
