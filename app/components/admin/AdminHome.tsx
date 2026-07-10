@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+// ✅ DEFINIR MODULOS AQUÍ
 const MODULOS = [
   {
     slug: "dashboard",
