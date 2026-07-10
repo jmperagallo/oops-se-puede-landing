@@ -6,10 +6,13 @@ import { registrarVisita } from "../lib/utils/visitas";
 
 export default function RegistrarVisita() {
   useEffect(() => {
-    const yaRegistrado = sessionStorage.getItem("visita_registrada");
-    if (!yaRegistrado) {
+    const ultimaVisita = localStorage.getItem("ultima_visita_oops");
+    const ahora = Date.now();
+    const tiempoMinimo = 3 * 60 * 1000; // 5 minutos
+
+    if (!ultimaVisita || (ahora - parseInt(ultimaVisita)) > tiempoMinimo) {
       registrarVisita();
-      sessionStorage.setItem("visita_registrada", "true");
+      localStorage.setItem("ultima_visita_oops", String(ahora));
     }
   }, []);
 
