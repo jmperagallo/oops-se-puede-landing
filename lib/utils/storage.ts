@@ -3,7 +3,8 @@ import { supabaseAdmin } from "../supabase/client";
 
 /**
  * Extrae la ruta del archivo desde la URL pública de Supabase
- * y decodifica caracteres especiales (como %20)
+ * Ejemplo: https://xxx.supabase.co/storage/v1/object/public/productos/1792016476804-fiim78h5.jpg
+ * → 1792016476804-fiim78h5.jpg
  */
 export function getFilePathFromUrl(url: string): string | null {
   if (!url) return null;
@@ -18,13 +19,19 @@ export function getFilePathFromUrl(url: string): string | null {
     return null;
   }
   
-  // ✅ DECODIFICAR la ruta para que coincida con el nombre real del archivo
-  const decodedPath = decodeURIComponent(parts[1]);
+  // ✅ La parte después de /public/ es "productos/nombre.jpg" o "nombre.jpg"
+  // Necesitamos quedarnos SOLO con lo que está después del bucket name
+  let path = parts[1];
   
-  console.log('🔍 Ruta original:', parts[1]);
-  console.log('🔍 Ruta decodificada:', decodedPath);
+  // El bucket name es el primer segmento después de /public/
+  // Ej: "productos/1792016476804-fiim78h5.jpg" → bucket = "productos"
+  const bucketName = path.split('/')[0];
   
-  return decodedPath;
+  // Devolvemos solo el resto (el nombre del archivo)
+  const fileName = path.substring(bucketName.length + 1);
+  
+  console.log('🔍 Ruta extraída:', fileName);
+  return decodeURIComponent(fileName);
 }
 
 export async function eliminarImagenDelBucket(
@@ -40,12 +47,17 @@ export async function eliminarImagenDelBucket(
 
     console.log(`🗑️ Eliminando archivo del bucket "${bucket}":`, filePath);
 
-    const { error } = await supabaseAdmin.storage
+    const { data, error } = await supabaseAdmin.storage
       .from(bucket)
       .remove([filePath]);
 
     if (error) {
       console.error('❌ Error eliminando archivo:', error);
+      return false;
+    }
+
+    if (!data || data.length === 0) {
+      console.warn('⚠️ Supabase no eliminó nada. La ruta no coincidió.');
       return false;
     }
 
@@ -55,18 +67,4 @@ export async function eliminarImagenDelBucket(
     console.error('❌ Error en eliminarImagenDelBucket:', error);
     return false;
   }
-}
-
-export async function eliminarImagenesDelBucket(
-  urls: string[],
-  bucket: string
-): Promise<number> {
-  let eliminadas = 0;
-  for (const url of urls) {
-    if (url && url.trim()) {
-      const ok = await eliminarImagenDelBucket(url, bucket);
-      if (ok) eliminadas++;
-    }
-  }
-  return eliminadas;
 }
