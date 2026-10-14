@@ -3,19 +3,30 @@ import { supabaseAdmin } from "../supabase/client";
 
 /**
  * Extrae la ruta del archivo desde la URL pública de Supabase
- * Ejemplo: https://xxx.supabase.co/storage/v1/object/public/productos/productos/123.jpg
- * → productos/productos/123.jpg
+ * y decodifica caracteres especiales (como %20)
  */
 export function getFilePathFromUrl(url: string): string | null {
   if (!url) return null;
-  const parts = url.split('/public/');
-  if (parts.length < 2) return null;
-  return parts[1];
+  
+  // Remover query parameters si existen
+  const urlWithoutParams = url.split('?')[0];
+  
+  // Buscar la parte después de /public/
+  const parts = urlWithoutParams.split('/public/');
+  if (parts.length < 2) {
+    console.warn('⚠️ Formato de URL no reconocido:', url);
+    return null;
+  }
+  
+  // ✅ DECODIFICAR la ruta para que coincida con el nombre real del archivo
+  const decodedPath = decodeURIComponent(parts[1]);
+  
+  console.log('🔍 Ruta original:', parts[1]);
+  console.log('🔍 Ruta decodificada:', decodedPath);
+  
+  return decodedPath;
 }
 
-/**
- * Elimina una imagen del bucket de Supabase Storage
- */
 export async function eliminarImagenDelBucket(
   url: string,
   bucket: string
@@ -46,21 +57,16 @@ export async function eliminarImagenDelBucket(
   }
 }
 
-/**
- * Elimina múltiples imágenes de un bucket
- */
 export async function eliminarImagenesDelBucket(
   urls: string[],
   bucket: string
 ): Promise<number> {
   let eliminadas = 0;
-
   for (const url of urls) {
     if (url && url.trim()) {
       const ok = await eliminarImagenDelBucket(url, bucket);
       if (ok) eliminadas++;
     }
   }
-
   return eliminadas;
 }
