@@ -5,76 +5,35 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+const MODULOS = [
+  { slug: "dashboard", label: "Dashboard", icon: "📊", href: "/gestion_oops", desc: "Resumen y estadísticas" },
+  { slug: "categorias", label: "Categorías", icon: "📂", href: "/gestion_oops/categorias", desc: "Organiza tu carta" },
+  { slug: "productos", label: "Productos", icon: "🍰", href: "/gestion_oops/productos", desc: "Gestiona la carta digital" },
+  { slug: "estadisticas", label: "Estadísticas", icon: "📈", href: "/gestion_oops/estadisticas", desc: "Visitas y métricas" },
+  { slug: "prospectos", label: "Prospectos", icon: "📧", href: "/gestion_oops/prospectos", desc: "Leads y contactos" },
+  { slug: "usuarios", label: "Usuarios", icon: "🛡️", href: "/gestion_oops/usuarios", desc: "Gestionar accesos" },
+  { slug: "galeria", label: "Galería", icon: "📷", href: "/gestion_oops/galeria", desc: "Subir imágenes" },
+  { slug: "pedidos", label: "Pedidos", icon: "📦", href: "/gestion_oops/pedidos", desc: "Gestionar pedidos" },
+  { slug: "configuracion", label: "Configuración", icon: "⚙️", href: "/gestion_oops/configuracion", desc: "Ajustes del sistema" },
+];
+
 export default function AdminHome() {
   const { data: session } = useSession();
   const nombre = session?.user?.name || "Admin";
+  const rol = session?.user?.rol || "COLABORADOR";
+  const permisos = session?.user?.permisos || [];
 
-  // ✅ Definir la constante DENTRO del componente
-  const MODULOS = [
-    {
-      slug: "dashboard",
-      label: "Dashboard",
-      icon: "📊",
-      href: "/gestion_oops",
-      desc: "Resumen y estadísticas"
-    },
-    {
-      slug: "categorias",
-      label: "Categorías",
-      icon: "📂",
-      href: "/gestion_oops/categorias",
-      desc: "Organiza tu carta"
-    },
-    {
-      slug: "productos",
-      label: "Productos",
-      icon: "🍰",
-      href: "/gestion_oops/productos",
-      desc: "Gestiona la carta digital"
-    },
-    {
-      slug: "estadisticas",
-      label: "Estadísticas",
-      icon: "📈",
-      href: "/gestion_oops/estadisticas",
-      desc: "Visitas y métricas"
-    },
-    {
-      slug: "prospectos",
-      label: "Prospectos",
-      icon: "📧",
-      href: "/gestion_oops/prospectos",
-      desc: "Leads y contactos"
-    },
-    {
-      slug: "usuarios",
-      label: "Usuarios",
-      icon: "🛡️",
-      href: "/gestion_oops/usuarios",
-      desc: "Gestionar accesos"
-    },
-    {
-      slug: "galeria",
-      label: "Galería",
-      icon: "📷",
-      href: "/gestion_oops/galeria",
-      desc: "Subir imágenes"
-    },
-    {
-      slug: "pedidos",
-      label: "Pedidos",
-      icon: "📦",
-      href: "/gestion_oops/pedidos",
-      desc: "Gestionar pedidos"
-    },
-    {
-      slug: "configuracion",
-      label: "Configuración",
-      icon: "⚙️",
-      href: "/gestion_oops/configuracion",
-      desc: "Ajustes del sistema"
-    }
-  ];
+  // ✅ Filtrar módulos según rol y permisos
+  const modulosVisibles = MODULOS.filter((modulo) => {
+    // El ADMIN ve todo
+    if (rol === "ADMIN") return true;
+    
+    // El COLABORADOR ve solo los módulos autorizados
+    // El dashboard siempre es visible
+    if (modulo.slug === "dashboard") return true;
+    
+    return permisos.includes(modulo.slug);
+  });
 
   return (
     <div className="p-4 md:p-6 bg-[#F8F6F2] min-h-[calc(100vh-64px)]">
@@ -88,13 +47,15 @@ export default function AdminHome() {
           ¡Hola, {nombre}! 👋
         </h1>
         <p className="font-montserrat text-[#95a5a6] mt-2 text-sm md:text-base">
-          Selecciona un módulo para comenzar a trabajar
+          {rol === "ADMIN" 
+            ? "Selecciona un módulo para comenzar a trabajar" 
+            : "Estos son los módulos que tienes autorizados"}
         </p>
         <div className="w-16 h-1 bg-[#B89B5E] mx-auto mt-4 rounded-full" />
       </motion.div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto">
-        {MODULOS.map((modulo, index) => (
+        {modulosVisibles.map((modulo, index) => (
           <motion.div
             key={modulo.slug}
             initial={{ opacity: 0, y: 30 }}

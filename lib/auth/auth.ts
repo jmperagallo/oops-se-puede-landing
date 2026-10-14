@@ -20,7 +20,6 @@ export const authOptions: NextAuthOptions = {
 
         console.log("🔍 Buscando usuario:", credentials.email);
 
-        // Buscar usuario en Supabase
         const { data: usuario, error } = await supabase
           .from('usuarios')
           .select('*')
@@ -32,9 +31,13 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        if (!usuario.activo) {
+          console.log("❌ Usuario inactivo");
+          return null;
+        }
+
         console.log("✅ Usuario encontrado:", usuario.email);
 
-        // Verificar contraseña
         const passwordValida = await bcrypt.compare(
           credentials.password,
           usuario.password
@@ -46,14 +49,16 @@ export const authOptions: NextAuthOptions = {
         }
 
         console.log("✅ Login exitoso para:", usuario.email);
+        console.log("📋 Rol:", usuario.rol);
+        console.log("📋 Permisos:", usuario.permisos);
 
-        // Retornar usuario sin la contraseña
         return {
           id: usuario.id,
           email: usuario.email,
           name: usuario.nombre,
           rol: usuario.rol,
-          activo: usuario.activo
+          activo: usuario.activo,
+          permisos: usuario.permisos || [],
         };
       }
     })
@@ -64,6 +69,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.rol = user.rol;
         token.activo = user.activo;
+        token.permisos = user.permisos;
       }
       return token;
     },
@@ -72,6 +78,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as string;
         session.user.rol = token.rol as string;
         session.user.activo = token.activo as boolean;
+        session.user.permisos = token.permisos as string[];
       }
       return session;
     }
@@ -81,7 +88,7 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 días
+    maxAge: 30 * 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: true,

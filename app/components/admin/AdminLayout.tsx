@@ -1,7 +1,7 @@
 // app/components/admin/AdminLayout.tsx
 "use client";
 
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -11,6 +11,7 @@ const MODULOS_NAV = [
   { slug: "dashboard", label: "Dashboard", icon: "📊", href: "/gestion_oops" },
   { slug: "categorias", label: "Categorías", icon: "📂", href: "/gestion_oops/categorias" },
   { slug: "productos", label: "Productos", icon: "🍰", href: "/gestion_oops/productos" },
+  { slug: "estadisticas", label: "Estadísticas", icon: "📈", href: "/gestion_oops/estadisticas" },
   { slug: "prospectos", label: "Prospectos", icon: "📧", href: "/gestion_oops/prospectos" },
   { slug: "usuarios", label: "Usuarios", icon: "🛡️", href: "/gestion_oops/usuarios" },
   { slug: "galeria", label: "Galería", icon: "📷", href: "/gestion_oops/galeria" },
@@ -25,10 +26,19 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { data: session } = useSession();
+  const rol = session?.user?.rol || "COLABORADOR";
+  const permisos = session?.user?.permisos || [];
+
+  // ✅ Filtrar módulos del sidebar
+  const modulosVisibles = MODULOS_NAV.filter((modulo) => {
+    if (rol === "ADMIN") return true;
+    if (modulo.slug === "dashboard") return true;
+    return permisos.includes(modulo.slug);
+  });
 
   return (
     <div className="min-h-screen bg-[#F8F6F2]">
-      {/* Navbar superior */}
       <nav className="bg-[#1C1C1C] text-white px-4 md:px-6 h-16 flex items-center justify-between sticky top-0 z-50 shadow-lg">
         <Link href="/gestion_oops" className="flex items-center gap-2">
           <span className="font-playfair text-xl">OOPS!</span>
@@ -39,7 +49,7 @@ export default function AdminLayout({
         
         <div className="flex items-center gap-4">
           <span className="text-sm text-[#bdc3c7] hidden md:block">
-            Panel de Control
+            {session?.user?.name || "Usuario"}
           </span>
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
@@ -58,10 +68,9 @@ export default function AdminLayout({
       </nav>
 
       <div className="flex">
-        {/* Sidebar */}
         <aside className="hidden md:block w-64 bg-white min-h-[calc(100vh-64px)] shadow-lg p-4">
           <nav className="space-y-1">
-            {MODULOS_NAV.map((modulo) => {
+            {modulosVisibles.map((modulo) => {
               const isActive = pathname === modulo.href;
               return (
                 <Link
@@ -81,11 +90,10 @@ export default function AdminLayout({
           </nav>
         </aside>
 
-        {/* Menú móvil */}
         {menuOpen && (
           <div className="md:hidden fixed inset-0 top-16 bg-white z-40 p-4 shadow-xl">
             <nav className="space-y-1">
-              {MODULOS_NAV.map((modulo) => {
+              {modulosVisibles.map((modulo) => {
                 const isActive = pathname === modulo.href;
                 return (
                   <Link
@@ -107,7 +115,6 @@ export default function AdminLayout({
           </div>
         )}
 
-        {/* Contenido principal */}
         <main className="flex-1 p-4 md:p-6">
           {children}
         </main>
