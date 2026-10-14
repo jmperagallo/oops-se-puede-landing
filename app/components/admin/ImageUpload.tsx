@@ -66,9 +66,10 @@ export default function ImageUpload({
       const compressedFile = await compressImage(file, maxSize, quality);
       setProgress(60);
 
+      // ✅ CORREGIDO: Sin folder duplicado, el archivo va directo al bucket
       const fileExt = 'jpg';
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 10)}.${fileExt}`;
-      const filePath = folder ? `${folder}/${fileName}` : fileName;
+      const filePath = fileName;
 
       setProgress(75);
       const { data, error: uploadError } = await supabaseAdmin.storage
