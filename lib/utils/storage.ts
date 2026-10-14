@@ -19,12 +19,10 @@ export function getFilePathFromUrl(url: string): string | null {
     return null;
   }
   
-  // ✅ La parte después de /public/ es "productos/nombre.jpg" o "nombre.jpg"
-  // Necesitamos quedarnos SOLO con lo que está después del bucket name
+  // La parte después de /public/ es "productos/nombre.jpg"
   let path = parts[1];
   
-  // El bucket name es el primer segmento después de /public/
-  // Ej: "productos/1792016476804-fiim78h5.jpg" → bucket = "productos"
+  // El bucket name es el primer segmento
   const bucketName = path.split('/')[0];
   
   // Devolvemos solo el resto (el nombre del archivo)
@@ -34,6 +32,9 @@ export function getFilePathFromUrl(url: string): string | null {
   return decodeURIComponent(fileName);
 }
 
+/**
+ * Elimina una imagen del bucket de Supabase Storage
+ */
 export async function eliminarImagenDelBucket(
   url: string,
   bucket: string
@@ -67,4 +68,21 @@ export async function eliminarImagenDelBucket(
     console.error('❌ Error en eliminarImagenDelBucket:', error);
     return false;
   }
+}
+
+/**
+ * ✅ Elimina múltiples imágenes de un bucket
+ */
+export async function eliminarImagenesDelBucket(
+  urls: string[],
+  bucket: string
+): Promise<number> {
+  let eliminadas = 0;
+  for (const url of urls) {
+    if (url && url.trim()) {
+      const ok = await eliminarImagenDelBucket(url, bucket);
+      if (ok) eliminadas++;
+    }
+  }
+  return eliminadas;
 }
