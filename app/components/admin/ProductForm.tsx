@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { supabaseAdmin } from "../../../lib/supabase/client";
 import ImageUpload from "./ImageUpload";
 import { Producto, Categoria } from "@/types/producto";
+import { eliminarImagenDelBucket } from "../../../lib/utils/storage";
 
 interface ProductFormProps {
   editing: Producto | null;
@@ -111,7 +112,13 @@ export default function ProductForm({
     setImagenes((prev) => [...prev, url]);
   };
 
-  const handleImageRemove = (index: number) => {
+  // ✅ Eliminar imagen del bucket al quitarla del formulario
+  const handleImageRemove = async (index: number) => {
+    const url = imagenes[index];
+    if (url) {
+      console.log("🗑️ Eliminando imagen del bucket...");
+      await eliminarImagenDelBucket(url, "productos");
+    }
     setImagenes((prev) => prev.filter((_, i) => i !== index));
   };
 

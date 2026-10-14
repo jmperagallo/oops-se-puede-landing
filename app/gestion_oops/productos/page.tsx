@@ -8,6 +8,7 @@ import { supabase, supabaseAdmin } from "../../../lib/supabase/client";
 import AdminLayout from "../../components/admin/AdminLayout";
 import ProductForm from "../../components/admin/ProductForm";
 import { Producto, Categoria } from "@/types/producto";
+import { eliminarImagenesDelBucket } from "../../../lib/utils/storage";
 import { Pencil, Trash2, Plus, Eye, EyeOff, Star } from "lucide-react";
 
 export default function AdminProductos() {
@@ -64,7 +65,6 @@ export default function AdminProductos() {
     })) || [];
 
     setProductos(productosConCategoria);
-    console.log("✅ Productos cargados:", productosConCategoria.length);
     setLoading(false);
   };
 
@@ -77,25 +77,33 @@ export default function AdminProductos() {
 
     if (!error && data) {
       setCategorias(data);
-    } else {
-      console.error("❌ Error cargando categorías:", error);
     }
   };
 
-  const eliminarProducto = async (id: string, nombre: string) => {
-    if (!confirm(`¿Eliminar el producto "${nombre}"?`)) {
+  // ✅ Eliminar producto + sus imágenes del bucket
+  const eliminarProducto = async (producto: Producto) => {
+    if (!confirm(`¿Eliminar el producto "${producto.nombre}" y todas sus imágenes?`)) {
       return;
     }
 
+    // 1. Eliminar imágenes del bucket
+    if (producto.imagenes && producto.imagenes.length > 0) {
+      console.log(`🗑️ Eliminando ${producto.imagenes.length} imágenes...`);
+      const eliminadas = await eliminarImagenesDelBucket(producto.imagenes, "productos");
+      console.log(`✅ ${eliminadas} imágenes eliminadas del bucket`);
+    }
+
+    // 2. Eliminar el producto de la base de datos
     const { error } = await supabaseAdmin
       .from("productos")
       .delete()
-      .eq("id", id);
+      .eq("id", producto.id);
 
     if (error) {
       console.error("❌ Error eliminando producto:", error);
       alert("Error al eliminar el producto");
     } else {
+      console.log("✅ Producto eliminado de la base de datos");
       cargarProductos();
     }
   };
@@ -106,11 +114,7 @@ export default function AdminProductos() {
       .update({ activo: !activo, updated_at: new Date().toISOString() })
       .eq("id", id);
 
-    if (!error) {
-      cargarProductos();
-    } else {
-      console.error("❌ Error actualizando estado:", error);
-    }
+    if (!error) cargarProductos();
   };
 
   const toggleDestacado = async (id: string, destacado: boolean) => {
@@ -119,11 +123,7 @@ export default function AdminProductos() {
       .update({ destacado: !destacado, updated_at: new Date().toISOString() })
       .eq("id", id);
 
-    if (!error) {
-      cargarProductos();
-    } else {
-      console.error("❌ Error actualizando destacado:", error);
-    }
+    if (!error) cargarProductos();
   };
 
   const resetForm = () => {
@@ -140,10 +140,7 @@ export default function AdminProductos() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center">
-            <div className="animate-pulse text-4xl mb-4">⏳</div>
-            <p className="text-[#95a5a6]">Cargando productos...</p>
-          </div>
+          <p className="text-[#95a5a6]">Cargando productos...</p>
         </div>
       </AdminLayout>
     );
@@ -225,10 +222,7 @@ export default function AdminProductos() {
                 </thead>
                 <tbody>
                   {productos.map((producto, index) => (
-                    <tr
-                      key={producto.id}
-                      className="border-b border-[#f1f1f1] hover:bg-[#fafbfc] transition"
-                    >
+                    <tr key={producto.id} className="border-b border-[#f1f1f1] hover:bg-[#fafbfc]">
                       <td className="p-4 text-sm text-[#95a5a6]">{index + 1}</td>
                       <td className="p-4">
                         {producto.imagenes && producto.imagenes.length > 0 ? (
@@ -236,9 +230,6 @@ export default function AdminProductos() {
                             src={producto.imagenes[0]}
                             alt={producto.nombre}
                             className="w-12 h-12 rounded-lg object-cover border border-[#D8C7B5]/30"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = "https://via.placeholder.com/48x48?text=🍰";
-                            }}
                           />
                         ) : (
                           <div className="w-12 h-12 rounded-lg bg-[#D8C7B5]/20 flex items-center justify-center text-xl">
@@ -246,12 +237,8 @@ export default function AdminProductos() {
                           </div>
                         )}
                       </td>
-                      <td className="p-4 font-medium text-[#1C1C1C]">
-                        {producto.nombre}
-                      </td>
-                      <td className="p-4 text-sm text-[#95a5a6]">
-                        {producto.categoria_nombre || "Sin categoría"}
-                      </td>
+                      <td className="p-4 font-medium text-[#1C1C1C]">{producto.nombre}</td>
+                      <td className="p-4 text-sm text-[#95a5a6]">{producto.categoria_nombre}</td>
                       <td className="p-4 font-playfair text-[#B89B5E] font-bold">
                         ${producto.precio.toLocaleString()}
                       </td>
@@ -259,11 +246,8 @@ export default function AdminProductos() {
                         <button
                           onClick={() => toggleDestacado(producto.id, producto.destacado)}
                           className={`p-1.5 rounded transition ${
-                            producto.destacado
-                              ? "text-yellow-500 hover:text-yellow-600"
-                              : "text-[#95a5a6] hover:text-yellow-400"
+                            producto.destacado ? "text-yellow-500" : "text-[#95a5a6]"
                           }`}
-                          title={producto.destacado ? "Quitar destacado" : "Marcar como destacado"}
                         >
                           <Star size={18} fill={producto.destacado ? "currentColor" : "none"} />
                         </button>
@@ -271,12 +255,9 @@ export default function AdminProductos() {
                       <td className="p-4">
                         <button
                           onClick={() => toggleActivo(producto.id, producto.activo)}
-                          className={`p-1.5 rounded transition ${
-                            producto.activo
-                              ? "text-green-500 hover:text-green-600"
-                              : "text-red-500 hover:text-red-600"
+                          className={`p-1.5 rounded ${
+                            producto.activo ? "text-green-500" : "text-red-500"
                           }`}
-                          title={producto.activo ? "Desactivar" : "Activar"}
                         >
                           {producto.activo ? <Eye size={18} /> : <EyeOff size={18} />}
                         </button>
@@ -285,15 +266,14 @@ export default function AdminProductos() {
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => editarProducto(producto)}
-                            className="p-1.5 rounded hover:bg-[#D8C7B5]/20 text-blue-500 hover:text-blue-700 transition"
-                            title="Editar"
+                            className="p-1.5 rounded hover:bg-[#D8C7B5]/20 text-blue-500"
                           >
                             <Pencil size={16} />
                           </button>
                           <button
-                            onClick={() => eliminarProducto(producto.id, producto.nombre)}
-                            className="p-1.5 rounded hover:bg-[#D8C7B5]/20 text-red-500 hover:text-red-700 transition"
-                            title="Eliminar"
+                            onClick={() => eliminarProducto(producto)}
+                            className="p-1.5 rounded hover:bg-[#D8C7B5]/20 text-red-500"
+                            title="Eliminar producto e imágenes"
                           >
                             <Trash2 size={16} />
                           </button>

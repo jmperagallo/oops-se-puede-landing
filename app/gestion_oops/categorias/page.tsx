@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { supabase, supabaseAdmin } from "../../../lib/supabase/client";
 import AdminLayout from "../../components/admin/AdminLayout";
 import ImageUpload from "../../components/admin/ImageUpload";
+import { eliminarImagenDelBucket } from "../../../lib/utils/storage";
 import { Pencil, Trash2, Plus, ChevronUp, ChevronDown } from "lucide-react";
 
 interface Categoria {
@@ -36,33 +37,9 @@ export default function AdminCategorias() {
   const [orden, setOrden] = useState(0);
   const [activo, setActivo] = useState(true);
 
-  // ✅ Función para eliminar una imagen del bucket
-  const eliminarImagenDelBucket = async (url: string) => {
-    try {
-      // Extraer la ruta del archivo de la URL
-      const parts = url.split('/public/');
-      if (parts.length < 2) {
-        console.warn('⚠️ No se pudo extraer la ruta de la URL:', url);
-        return;
-      }
-      
-      const filePath = parts[1];
-      console.log('🗑️ Eliminando archivo:', filePath);
-      
-      const { error } = await supabaseAdmin.storage
-        .from('categorias')
-        .remove([filePath]);
-      
-      if (error) {
-        console.error('❌ Error eliminando archivo:', error);
-        throw error;
-      }
-      
-      console.log('✅ Archivo eliminado correctamente');
-    } catch (error) {
-      console.error('❌ Error en eliminarImagenDelBucket:', error);
-      throw error;
-    }
+  // ✅ Función para eliminar una imagen del bucket (usada por ImageUpload)
+  const eliminarImagenDelBucketHandler = async (url: string) => {
+    await eliminarImagenDelBucket(url, "categorias");
   };
 
   useEffect(() => {
@@ -139,20 +116,29 @@ export default function AdminCategorias() {
     }
   };
 
-  const eliminarCategoria = async (id: string, nombre: string) => {
-    if (!confirm(`¿Eliminar la categoría "${nombre}" y todos sus productos?`)) {
+  // ✅ Eliminar categoría + su imagen del bucket
+  const eliminarCategoria = async (categoria: Categoria) => {
+    if (!confirm(`¿Eliminar la categoría "${categoria.nombre}" y todos sus productos?`)) {
       return;
     }
 
+    // 1. Eliminar la imagen del bucket si existe
+    if (categoria.imagen_url) {
+      console.log("🗑️ Eliminando imagen de la categoría...");
+      await eliminarImagenDelBucket(categoria.imagen_url, "categorias");
+    }
+
+    // 2. Eliminar la categoría de la base de datos
     const { error } = await supabaseAdmin
       .from("categorias")
       .delete()
-      .eq("id", id);
+      .eq("id", categoria.id);
 
     if (error) {
       console.error("❌ Error eliminando categoría:", error);
       alert("Error al eliminar la categoría");
     } else {
+      console.log("✅ Categoría eliminada");
       cargarCategorias();
     }
   };
@@ -216,7 +202,6 @@ export default function AdminCategorias() {
   return (
     <AdminLayout>
       <div className="p-4 md:p-6">
-        {/* Encabezado */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-[#1C1C1C] font-playfair">
@@ -235,7 +220,6 @@ export default function AdminCategorias() {
           </button>
         </div>
 
-        {/* Formulario */}
         {showForm && (
           <div className="bg-white rounded-xl shadow-md p-6 mb-6 border border-[#D8C7B5]/30">
             <h2 className="font-semibold text-lg mb-4 flex items-center gap-2">
@@ -282,7 +266,6 @@ export default function AdminCategorias() {
                 </div>
               </div>
 
-              {/* ✅ ImageUpload con onDelete para eliminar imágenes antiguas */}
               <ImageUpload
                 value={imagenUrl}
                 onChange={setImagenUrl}
@@ -291,7 +274,7 @@ export default function AdminCategorias() {
                 label="Imagen de la categoría"
                 maxSize={1200}
                 quality={0.9}
-                onDelete={eliminarImagenDelBucket}
+                onDelete={eliminarImagenDelBucketHandler}
               />
 
               <div>
@@ -354,7 +337,6 @@ export default function AdminCategorias() {
           </div>
         )}
 
-        {/* Listado */}
         {loading ? (
           <div className="text-center py-12">
             <p className="text-[#95a5a6]">Cargando...</p>
@@ -451,9 +433,9 @@ export default function AdminCategorias() {
                             <Pencil size={16} />
                           </button>
                           <button
-                            onClick={() => eliminarCategoria(categoria.id, categoria.nombre)}
+                            onClick={() => eliminarCategoria(categoria)}
                             className="p-1.5 rounded hover:bg-[#D8C7B5]/20 text-red-500 hover:text-red-700 transition"
-                            title="Eliminar"
+                            title="Eliminar categoría e imagen"
                           >
                             <Trash2 size={16} />
                           </button>

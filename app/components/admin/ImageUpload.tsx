@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { supabase, supabaseAdmin, supabaseUrl } from "../../../lib/supabase/client";
+import { supabaseAdmin, supabaseUrl } from "../../../lib/supabase/client";
 import { compressImage } from "../../../lib/utils/compressImage";
 import { Upload, X } from "lucide-react";
 
@@ -46,15 +46,14 @@ export default function ImageUpload({
       return;
     }
 
-    // Si hay una imagen antigua y onDelete, eliminarla primero
+    // ✅ Si hay imagen antigua, eliminarla primero
     if (value && onDelete) {
+      console.log("🗑️ Eliminando imagen antigua:", value);
       try {
-        console.log("🗑️ Eliminando imagen antigua:", value);
         await onDelete(value);
         console.log("✅ Imagen antigua eliminada");
       } catch (err) {
         console.error("❌ Error eliminando imagen antigua:", err);
-        // Continuamos con la subida aunque falle la eliminación
       }
     }
 
@@ -96,7 +95,7 @@ export default function ImageUpload({
       let errorMessage = "Error al subir la imagen";
       if (err instanceof Error) {
         if (err.message.includes("row-level security")) {
-          errorMessage = "Error de permisos en la base de datos. Por favor, contacta al administrador.";
+          errorMessage = "Error de permisos en la base de datos. Contacta al administrador.";
         } else {
           errorMessage = err.message;
         }
@@ -115,7 +114,7 @@ export default function ImageUpload({
     if (value && onDelete) {
       try {
         await onDelete(value);
-        console.log("✅ Imagen eliminada correctamente");
+        console.log("✅ Imagen eliminada del bucket");
       } catch (err) {
         console.error("❌ Error eliminando imagen:", err);
       }
@@ -123,7 +122,6 @@ export default function ImageUpload({
     onChange("");
   };
 
-  // ✅ Función para abrir el selector de archivos
   const handleClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -138,7 +136,6 @@ export default function ImageUpload({
 
       {value ? (
         <div className="relative inline-block group">
-          {/* ✅ La imagen es clickeable para cambiar */}
           <div 
             onClick={handleClick}
             className="cursor-pointer relative w-32 h-32 rounded-lg overflow-hidden border border-[#D8C7B5]/30 shadow-sm hover:shadow-md transition"
@@ -151,7 +148,6 @@ export default function ImageUpload({
                 (e.target as HTMLImageElement).src = "https://via.placeholder.com/128x128?text=Error";
               }}
             />
-            {/* Overlay "Cambiar imagen" */}
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition flex items-center justify-center">
               <span className="text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition px-2 text-center">
                 Cambiar imagen
@@ -159,7 +155,6 @@ export default function ImageUpload({
             </div>
           </div>
           
-          {/* Botón eliminar (X) */}
           <button
             type="button"
             onClick={handleRemove}
